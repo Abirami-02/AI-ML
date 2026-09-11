@@ -1,0 +1,32 @@
+import json
+import numpy as np
+
+def save_discounted_orders(orders, discount_percent, filename):
+    prices = [order["price"] for order in orders]
+    prices_array = np.array(prices)
+    discount_array=(1-discount_percent/100)*prices_array
+
+    # TODO: apply the discount elementwise to prices_array
+
+    updated_orders = []
+    for order,dis in zip(orders,discount_array):
+        order["price"]=float(dis)
+        updated_orders.append(order)
+
+    # TODO: build updated_orders by copying each order dict and replacing
+    #       "price" with the corresponding discounted value
+
+    with open(filename, "w") as f:
+        # TODO: write each updated order as one JSON line using json.dumps()
+        for order in updated_orders:
+           f.write(json.dumps(order)+"\n")
+    return updated_orders
+
+if __name__ == "__main__":
+    orders = [
+        {"order_id": "O1", "item": "Dosa", "price": 100},
+        {"order_id": "O2", "item": "Idly", "price": 60},
+        {"order_id": "O3", "item": "Biryani", "price": 300},
+    ]
+    result = save_discounted_orders(orders, 10, "discounted_orders.txt")
+    print(result)
